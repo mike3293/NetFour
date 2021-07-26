@@ -1,0 +1,78 @@
+# Build outputs
+**/bin
+**/dist
+**/publish_output
+**/.env
+**/.env.*.local
+!/.env
+
+# Test outputs
+**/pact-logs
+**/coverage
+**/junit.xml
+pact-logs/
+**/cypress/videos
+**/cypress/screenshots/
+**/cypress/output/
+
+# Dependancies
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/node_modules
+**/lerna-debug.log
+**/debug.log
+
+# IDE configs
+**/.vs
+**/.vscode/*
+**/obj
+**/*.sln.user
+**/*.csproj.user
+**/*.ncrunchsolution.user
+**/.idea/
+**/.idea/
+.vscode/
+**/*.sln.DotSettings.user
+
+# OS
+**/.DS_Store
+
+# Other
+**/*.cache
+*.orig
+
+# Includes
+!**/.vscode/settings.json
+!**/.vscode/launch.json
+
+/Shared/Models/Boomin/Boomin.Listing/Boomin.Listing.ruleset
+/domain-services/listing/shared/Listing.Domain/Listing.Domain.ruleset
+/domain-services/listing/rightmove-ingest-api/RightmoveIngestApi.Service/RightmoveIngestApi.Service-1.ruleset
+/domain-services/listing/rightmove-ingest-api/RightmoveIngestApi.Rightmove/RightmoveIngestApi.Rightmove.ruleset
+/domain-services/listing/rightmove-ingest-api/RightmoveIngestApi.Rightmove/RightmoveIngestApi.Rightmove-1.ruleset
+/domain-services/listing/rightmove-ingest-api/RightmoveIngestApi/RightmoveIngestApi.ruleset
+/domain-services/listing/rightmove-ingest-api/RightmoveIngestApi/RightmoveIngestApi-2.ruleset
+/domain-services/listing/rightmove-ingest-api/RightmoveIngestApi/RightmoveIngestApi-1.ruleset
+
+# Project Rider
+**/.editorconfig
+
+# Terraform
+**/.terraform
+**.tfstate
+**.tfstate.backup*
+
+# Platform domain
+domain-services/platform/PlatformBot/platform-bot-src/appsettings.Development.json
+/domain-services/search/sample-data-ingestor-api/SampleDataIngestor/FakeData/SampleData
+
+# local appsettings
+appsettings-local.jsonc
+appsettings.LocalSecrets.json
+/domain-services/advert-ingest/.ionide
+/acceptance-tests/Boomin.AcceptanceTests/TestResults
+
+# Advert Ingest
+/domain-services/advert-ingest/rightmove-blm-worker/Boomin.BlmWorker.AdminTasks/Properties/launchSettings.json
+/domain-services/advert-ingest/support/Digger/Digger/Properties/launchSettings.json
