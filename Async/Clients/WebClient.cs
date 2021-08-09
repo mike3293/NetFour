@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Text;
 
 namespace Async.Clients
@@ -13,7 +14,7 @@ namespace Async.Clients
             {
                 var result = new DownloadResult()
                 {
-                    IsCancelled = true
+                    IsCanceled = true
                 };
 
                 onDownloaded(result);
@@ -27,28 +28,31 @@ namespace Async.Clients
                 }
 
                 using var client = new System.Net.WebClient();
-                var content = client.DownloadString(url);
+                client.DownloadStringAsync(new Uri(url));
 
-                if (_isCanceled)
+                client.DownloadStringCompleted += (_, e) => 
                 {
-                    ReturnCancelledResult();
-                }
-                else
-                {
-                    var result = new DownloadResult()
+                    if (_isCanceled)
                     {
-                        IsCancelled = false,
-                        Content = content
-                    };
+                        ReturnCancelledResult();
+                    }
+                    else
+                    {
+                        var result = new DownloadResult()
+                        {
+                            IsCanceled = false,
+                            Content = e.Result
+                        };
 
-                    onDownloaded(result);
-                }
+                        onDownloaded(result);
+                    }
+                };
             }
             catch (Exception ex)
             {
                 var result = new DownloadResult()
                 {
-                    IsCancelled = _isCanceled,
+                    IsCanceled = _isCanceled,
                     Error = ex
                 };
 

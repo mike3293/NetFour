@@ -33,13 +33,20 @@ namespace Async
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
 
-            tokenSource.CancelAfter(1000);
+            tokenSource.CancelAfter(5000);
 
-            var content = await client.DonwloadAsync(
-                "https://www.google.com/logos/doodles/2021/doodle-champion-island-games-july-26-6753651837109017-s.png",
-                token);
+            try
+            {
+                var content = await client.DonwloadAsync(
+                    "https://www.google.com/logos/doodles/2021/doodle-champion-island-games-july-26-6753651837109017-s.png",
+                    token);
 
-            Console.WriteLine($"Content: {content}");
+                Console.WriteLine($"Content: {content}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
     }
 }

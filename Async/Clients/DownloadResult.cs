@@ -4,7 +4,7 @@ namespace Async.Clients
 {
     public class DownloadResult
     {
-        public bool IsCancelled { get; set; }
+        public bool IsCanceled { get; set; }
 
         public Exception Error { get; set; }
 
