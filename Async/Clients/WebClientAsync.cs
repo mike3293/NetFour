@@ -11,13 +11,7 @@ namespace Async.Clients
             var tcs = new TaskCompletionSource<string>();
 
             var syncClient = new WebClient();
-            cancellationToken.Register(() => 
-            { 
-                if (!tcs.Task.IsCompleted)
-                { 
-                    syncClient.CancelDownload(); 
-                } 
-            });
+            var tokenRegistration = cancellationToken.Register(syncClient.CancelDownload);
 
             try
             {
@@ -36,6 +30,8 @@ namespace Async.Clients
                     {
                         tcs.SetResult(result.Content);
                     }
+
+                    tokenRegistration.Unregister();
                 });
 
             }
