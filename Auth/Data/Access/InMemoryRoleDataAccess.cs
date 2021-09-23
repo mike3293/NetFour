@@ -1,4 +1,4 @@
-﻿using Auth.Models;
+using Auth.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

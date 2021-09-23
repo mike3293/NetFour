@@ -1,4 +1,4 @@
-﻿using Auth.Data.Access;
+using Auth.Data.Access;
 using Auth.Models;
 using Microsoft.AspNetCore.Identity;
 using System;

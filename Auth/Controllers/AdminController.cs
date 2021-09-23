@@ -1,4 +1,4 @@
-﻿using Auth.Data;
+using Auth.Data;
 using Auth.Data.Access;
 using Auth.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -49,7 +49,7 @@ namespace Auth.Controllers
         }
 
         [HttpGet("roles")]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "USER")]
         public IEnumerable<IdentityRole> GetRoles()
         {
             var roles = _roleAccess.GetAll();
@@ -61,7 +61,7 @@ namespace Auth.Controllers
         [HttpPost("createRoles")]
         public async Task CreateRoles()
         {
-            string[] roleNames = { "Admin", "User" };
+            string[] roleNames = { "ADMIN", "USER" };
             IdentityResult roleResult;
 
             foreach (var roleName in roleNames)
@@ -86,6 +86,7 @@ namespace Auth.Controllers
 
             var admin = new AppUser
             {
+                Age = 20,
                 UserName = _configuration["Admin:UserName"],
                 Email = _configuration["Admin:UserEmail"],
                 EmailConfirmed = true
@@ -93,7 +94,7 @@ namespace Auth.Controllers
             string adminPass = _configuration["Admin:UserPassword"];
 
             await _userManager.CreateAsync(admin, adminPass);
-            await _userManager.AddToRoleAsync(admin, "Admin");
+            await _userManager.AddToRoleAsync(admin, "ADMIN");
             await _userManager.AddClaimAsync(admin, new Claim("IsMainAdmin", "true"));
         }
 
@@ -108,6 +109,13 @@ namespace Auth.Controllers
             var s = await _userManager.IsInRoleAsync(user, "User");
 
             return result;
+        }
+
+        [HttpGet("claims")]
+        [Authorize]
+        public string GetClaims()
+        {
+            return HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Age").Value;
         }
     }
 }

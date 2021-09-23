@@ -3,6 +3,8 @@ using Auth.Data.Access;
 using Auth.Data.Stores;
 using Auth.Models;
 using Auth.TimeoutMiddleware;
+using Auth.Transformation;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,29 +37,32 @@ namespace Auth
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddSingleton<InMemoryUserDataAccess>();
             services.AddSingleton<InMemoryRoleDataAccess>();
             services.AddSingleton<InMemoryUserRoleDataAccess>();
             services.AddSingleton<InMemoryUserClaimDataAccess>();
 
             services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddDefaultTokenProviders()
                 .AddUserStore<InMemoryUserStore>()
-                .AddRoleStore<InMemoryRoleStore>();
+                .AddRoleStore<InMemoryRoleStore>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<IClaimsTransformation, AddAgeClaimTransformation>();
 
             services.AddControllers();
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("MainAdminOnly", policy =>
-                       policy.RequireRole("Admin").RequireClaim("IsMainAdmin", "true"));
+                       policy.RequireRole("ADMIN").RequireClaim("IsMainAdmin", "true"));
             });
 
             services.Configure<SecurityStampValidatorOptions>(o =>
                 o.ValidationInterval = TimeSpan.Zero);
 
             services.AddHealthChecks()
-                .AddSqlServer(Configuration["ConnectionStrings:DefaultConnection"])
+                //.AddSqlServer(Configuration["ConnectionStrings:DefaultConnection"])
                 .AddUrlGroup(new Uri("https://www.google.com/"));
         }
 
