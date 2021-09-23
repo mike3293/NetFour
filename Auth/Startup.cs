@@ -1,4 +1,6 @@
 using Auth.Data;
+using Auth.Data.Access;
+using Auth.Data.Stores;
 using Auth.Models;
 using Auth.TimeoutMiddleware;
 using Microsoft.AspNetCore.Authorization;
@@ -33,14 +35,16 @@ namespace Auth
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddSingleton<InMemoryUserDataAccess>();
+            services.AddSingleton<InMemoryRoleDataAccess>();
+            services.AddSingleton<InMemoryUserRoleDataAccess>();
+            services.AddSingleton<InMemoryUserClaimDataAccess>();
+
             services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                //.AddUserStore<>()
-                //.AddRoleStore()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddDefaultTokenProviders()
+                .AddUserStore<InMemoryUserStore>()
+                .AddRoleStore<InMemoryRoleStore>();
+
             services.AddControllers();
 
             services.AddAuthorization(options =>
@@ -55,9 +59,6 @@ namespace Auth
             services.AddHealthChecks()
                 .AddSqlServer(Configuration["ConnectionStrings:DefaultConnection"])
                 .AddUrlGroup(new Uri("https://www.google.com/"));
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-            //services.AddRazorPages();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

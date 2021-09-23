@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Auth.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,12 +13,12 @@ namespace Auth.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        private SignInManager<IdentityUser> _signInManager;
+        private SignInManager<AppUser> _signInManager;
 
-        private UserManager<IdentityUser> _userManager;
+        private UserManager<AppUser> _userManager;
 
 
-        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;

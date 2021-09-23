@@ -1,4 +1,6 @@
 ﻿using Auth.Data;
+using Auth.Data.Access;
+using Auth.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -18,27 +20,30 @@ namespace Auth.Controllers
     {
         private IConfiguration _configuration;
 
-        private ApplicationDbContext _context;
-
         private RoleManager<IdentityRole> _roleManager;
+        
+        private InMemoryRoleDataAccess _roleAccess;
 
-        private UserManager<IdentityUser> _userManager;
+        private UserManager<AppUser> _userManager;
+
+        private InMemoryUserDataAccess _userAccess;
 
 
-        public AdminController(IConfiguration configuration, ApplicationDbContext context, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public AdminController(IConfiguration configuration, InMemoryRoleDataAccess roleAccess, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, InMemoryUserDataAccess userAccess)
         {
             _configuration = configuration;
-            _context = context;
             _roleManager = roleManager;
+            _roleAccess = roleAccess;
             _userManager = userManager;
+            _userAccess = userAccess;
         }
 
 
         [HttpGet("users")]
         [Authorize(Policy = "MainAdminOnly")]
-        public IEnumerable<IdentityUser> GetUsers()
+        public IEnumerable<AppUser> GetUsers()
         {
-            var users = _context.Users.ToList();
+            var users = _userAccess.GetAll();
 
             return users;
         }
@@ -47,7 +52,8 @@ namespace Auth.Controllers
         [Authorize(Roles = "User")]
         public IEnumerable<IdentityRole> GetRoles()
         {
-            var roles = _context.Roles.ToList();
+            var roles = _roleAccess.GetAll();
+            _userAccess.GetAll();
 
             return roles;
         }
@@ -67,7 +73,7 @@ namespace Auth.Controllers
                 }
             }
 
-            var commonUser = new IdentityUser
+            var commonUser = new AppUser
             {
                 UserName = _configuration["User:UserName"],
                 Email = _configuration["User:UserEmail"],
@@ -78,7 +84,7 @@ namespace Auth.Controllers
             await _userManager.CreateAsync(commonUser, userPass);
             await _userManager.AddToRoleAsync(commonUser, "User");
 
-            var admin = new IdentityUser
+            var admin = new AppUser
             {
                 UserName = _configuration["Admin:UserName"],
                 Email = _configuration["Admin:UserEmail"],
@@ -98,6 +104,8 @@ namespace Auth.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
             var result = await _userManager.AddToRoleAsync(user, "Admin");
+
+            var s = await _userManager.IsInRoleAsync(user, "User");
 
             return result;
         }
