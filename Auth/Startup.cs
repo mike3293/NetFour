@@ -1,4 +1,5 @@
 using Auth.Data;
+using Auth.Models;
 using Auth.TimeoutMiddleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +37,9 @@ namespace Auth
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                //.AddUserStore<>()
+                //.AddRoleStore()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllers();
 
@@ -45,6 +48,9 @@ namespace Auth
                 options.AddPolicy("MainAdminOnly", policy =>
                        policy.RequireRole("Admin").RequireClaim("IsMainAdmin", "true"));
             });
+
+            services.Configure<SecurityStampValidatorOptions>(o =>
+                o.ValidationInterval = TimeSpan.Zero);
 
             services.AddHealthChecks()
                 .AddSqlServer(Configuration["ConnectionStrings:DefaultConnection"])
@@ -56,7 +62,7 @@ namespace Auth
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseTimeout(10);
+            app.UseDelay(10);
 
             if (env.IsDevelopment())
             {

@@ -4,17 +4,17 @@ using System.Threading.Tasks;
 
 namespace Auth.TimeoutMiddleware
 {
-    public class TimeoutMiddleware
+    public class DelayMiddleware
     {
         private readonly RequestDelegate _next;
 
-        private readonly int _maxTimeout;
+        private readonly int _maxDelay;
 
 
-        public TimeoutMiddleware(RequestDelegate next, int maxTimeout)
+        public DelayMiddleware(RequestDelegate next, int maxDelay)
         {
             _next = next;
-            _maxTimeout = maxTimeout;
+            _maxDelay = maxDelay;
         }
 
 
@@ -32,10 +32,10 @@ namespace Auth.TimeoutMiddleware
             {
                 var parsedTimeout = Int32.Parse(timeout);
 
-                if (parsedTimeout > _maxTimeout)
+                if (parsedTimeout > _maxDelay)
                 {
                     context.Response.StatusCode = 400;
-                    await context.Response.WriteAsync($"Max timeout is {_maxTimeout} sec.");
+                    await context.Response.WriteAsync($"Max timeout is {_maxDelay} sec.");
                 }
                 else
                 {
