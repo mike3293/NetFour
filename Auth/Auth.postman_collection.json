@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "a9962977-d8e5-4f0a-a0d4-5b0e52c466a5",
+		"name": "Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createRole",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44389/api/admin/createRoles",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						"api",
+						"admin",
+						"createRoles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44389/login?email=Test1@test.ru&pass=Test1@test.ru",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "Test1@test.ru"
+						},
+						{
+							"key": "pass",
+							"value": "Test1@test.ru"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change pass",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": ".AspNetCore.Identity.Application=CfDJ8LRUYag5KK9FlmxwEXYachkAQG-ynUyPA1-wTca5dsKQPgNfwYVe1pWhBjtVLt24L0LzGd_mwKCR0g-OuH45PQScGDT-623tUhS57VIM2mCBlD2doUi8EtLvEI3Z44YZDmI1QQPCV_lXBV21xwg5HaQSdEwrPyGR7hsGgOlbwa-oQl9vP3VFSD6sfrvQZR-N7MFjSP8ohSRdkXBk_Zd26-Q9O-sDt4YetEb_7Uh4l9O8Nr6BEEiH1xhR11mMuEle3yhhtnojqfkoO3aWvj7csbCnbFtnBj4BCm30S_tRlLHrec4gpsj9oIeZqg9TaNfCoKAzp_nll7YEK5L8MT1ozNCy2-n8B7GmKPfZD-3pFpnrcXHDZSWfzOkJ1zocHPHHUS0B4xwMUITs5NDsKAsxMrx7dqtiiWlWKNBxEXYvi7IXS6uQPODWtHs-jaVqo28yGMyWGS-6LM41zTYRCywyII5qSOVgkkgqz1tVSprLD6PitafkPjcIHWGT0YVTawD_T6CRopzaySqTASJCQdbvZ971vk1RRhQt-3ciHoIDDyNyJ4yHK8YjjBnqE79jIyP2MOpAv9bqu1U35M92r-PyNRHIQpdFL6Ji_63FQ6PRNyW31q58E_sYjZ0CMAMn8hddvfCKmo_Jt-cMZrQQg_vD_PMiSHmup1fqesNIoz0IUu3NZaSqTf01thuTwvBQlkee_pwEPlF6GWPJ9l6OmD4Tm5CAbQqaMM2OcysWxrhSuWBlRnkrsBjb4i6gKaWUdAyjLcTyb8SvDasyJq9IcEHqMT2zzVsKS6O9LOPrCiYkBq8Uq5miBNZ5U5XeG2QBvP_BquZXi8IgT4mkViJYkkV52kObGdxD_LFDwmAngpOEwvqfF4cVKzdLne0qwid3CyBMvQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44389/changePassword?currentPass=Test1@test.ru&newPass=Test11@test.ru",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						"changePassword"
+					],
+					"query": [
+						{
+							"key": "currentPass",
+							"value": "Test1@test.ru"
+						},
+						{
+							"key": "newPass",
+							"value": "Test11@test.ru"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRoles",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": ".AspNetCore.Identity.Application=CfDJ8BtlKey2SCVJhRR6ECDStWuna2buQwpXs-52Tfw8zZnOUXVOdHlo-I89wdCFKHF5XbCi3y0WyRnxor9YL2d2S9phu2fAcq19Jei_Www2LVZrRcvXhPd54Eooh-KToL5CqFz2HZ8iEnHqYB-mN_lujcHinBbccabkDcXHYDTVMOo1-hv8WmIJLCND4gf9IpPt_er_p4eYYXnn7DdwFklpX9Nn9Wn_w5Hl_nrNDLBMz8Y8-z-hNDScPNIso5zuT5m0HCqtUZkYHJFqD9RZqy1SN9pS-oMi7m6dwGJePRL8MlFpJ3bVdbvRWyMtrI6lBpxWrG_2V8ihYCawRIF_jFWSxOvoGl5UO8BlyLaTB1OBVlSMaKVwT8RSY_4_d8DfSU-B02AZwUTFQAoCMQuus8dmFQXxXF01argcHkUXZbIOk9e8GfU7ybbvjT6cEXf9ma1uAB14qrxnUgv_uvqRQqgwFoUeljwbjOV4O7Ms9pKBFmKeFyqs9ZniFyRjgBDoqLM8lY2dmIK8cJ2mNzMxQbtiLE6kpc87UpF5hz5PoWuwdyZCdeFCdEsBe22ss-e7tAkkRClR41hw9q9URoULDlmSzpQeQWh0C667X21o22StDGgfTGDIkO6xlfRIqOe48hjJmFvyoDWWJyIWfre2KYGJAjbgzAom3TYQbwGQo_AJG7Pjw0gKWR2eN_l72Nr4RE0Obs9C_hgltxIlT6xkaGR1b0bZQWJvJWlkXpsKcrUZFTNVYveEnrO4hS16-XmwNmg20oLylXeE38G-XyDJgsf5mDN4SCa9UfP3xp7XdraCRM-R6SK7DU-ENxXjeHLli-5yGCfpsBpKoGholJ3WIO0Ze_GHDOAbgw1TiDy97Lddzipoi9fPFXezNNcp_73srkJuYw",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44389/api/admin/roles",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						"api",
+						"admin",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUsers",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": ".AspNetCore.Identity.Application=CfDJ8BtlKey2SCVJhRR6ECDStWvnzqNuSGO7FtBaz4vmjuFRf-ThM6TDcXYTWFFvdYP6HEshDBVyUVxYgRlk8ICQ6dsUnnKVpNijO7FpGRtK35kDLlab31RJRDeiaKAGun8XSfRNQjnAikZjmR48Yzwpa3UuY_BAZDRPJuwJ3mds4G9C_y24BdTY4XzoPv7_QhkAJgavJDnuhFuDf6-RHVIXhAF_rtf9uoWeKyKk9Or9V_RgljYLbDHGXiKiF-DC99do3tDR890ft4LpAyvXxpKYnpLBv6rWYJQ1T3c6dTyDYrWfuZX8gQ8Vq86rmM6Ki-NE5Ug3zRE8Df4ZriVATg6GAhYz2nZqAgvjYbL6u1-f_Bbta8y6sTo0ePHisoIKmr-hxXTZ-rBK0SNH-kg_XXZSg4PLug-Ijnt0H7qStSpyiFYnphY00j3eEYuk4H4CgSPdvk8AR9g174Wec_0i7TUxlki51tU7jpJ_P7Z-IiQdWUwsUC7jL39hiqUbpjS2PTmNl4fler4Q3kkoQO1BI7olflp1NK0KtF5pLfNBAZYu3jHnAe1eE4Qse8_83bYq-fYu2RElvM9ffiJiBgcKzpBcdaL6Cueqv8JLbSLFTtgWm3XbgCh9oqItxoZk2W3-BDFEltd-CveEo6PtiCFZaZXs9MObOWFTR_Ae35gBD70QfdKbRaXM9NwewjLxZejIsJ7I2yzDhn1T87EVRk2R-zu1XZw2XmVAyXPHZnEnAKyH6oX-CyeQ-EmkiEQhJdFQGH85cFQrFVeq6VKZ-fs7b0twjIMirStKDGxt2VGT-7F7pS6EM-fRxwjVgQxdXwl-4FHKeWU0lMchkZdBED-_Yo6n0MIUWoEAlH5Gb4DyI3t64B0JBD-x-jur_L2IlzgrtCKxSg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44389/api/admin/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						"api",
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStatic",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"type": "text",
+						"value": ".AspNetCore.Identity.Application=CfDJ8LRUYag5KK9FlmxwEXYachnnnisYJKAqQRUGtbCM56kR7ba0YuQa0PgOpwf0oKi0qvAVoSJWmOH8jUmjHJU-TcPmJIzlHgoacnd7PNUDFtZmni86Pagm_DfvGfz5aFSiDA9T_onOzcxqqIbdD99pRi2AMxjQMt5CJiJXFLxtfY1X7wKCZB4nmaDZxaeRfo0AJKS_9MQ7bw7TpR6sRQdHM2fdiFI6eUO7mDe0SeUKRCfDo8Xgr-Q3KnvuiDR82GzOnnaz77MCDhVEYw6Wm59xqQhDSkD72jBry_KDLGwNXtFhsNRRxV8UlS1nS8-kJbq5UnnFmzkJhEy7EF7FVgEpbxTl9k7nMzKmxKV50oMWRiLoSKbzwhbe2T-H4iiGesPb3Fb12BK71Ro-j790jcpJ0aafYsWNSqb3prjEYGz8GMUIHr26m0Lp5NlOI4BODPx69NgLYxSm5cUWKGFiV3Gs3nWafx9MgZzH5Xg20oEp3FJ2jv6RrawURRs1mgZfKBIhwx_xifQqhgjC5ey40Rs6ukv0eHlGx_muMQ6Tikjibntj3WpzJua0HRKSNkt06p54yug95Ek3nyX8--4Jq_cFWOYR11QJ592wsRV1HMioTrmRw1ZHAPmD3LgGZyZ2s4yRSbXPfMMCoBdiAAKDe4alt57g335oPn9WZ7vuFSina3VZcL0hZ0bcRjVN5fU-aeaqlMw2bwSTTNbdcm3zrm6cB0XHW_K5b_WDsnrnIHNByGw8OSsqR4w5jBsv-bf0EsNlscjQhZ4zY_bjxspZSHxwdXSRHf_couYYxzsDc5f9UMEYH0WTOFr8-ScWFcvV6cW5BKw-c_qMbNVsQ2BuNe7PwUc"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44389/staticFiles/test.png",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						"staticFiles",
+						"test.png"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Timeout&Health",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"type": "text",
+						"value": ".AspNetCore.Identity.Application=CfDJ8LRUYag5KK9FlmxwEXYachnnnisYJKAqQRUGtbCM56kR7ba0YuQa0PgOpwf0oKi0qvAVoSJWmOH8jUmjHJU-TcPmJIzlHgoacnd7PNUDFtZmni86Pagm_DfvGfz5aFSiDA9T_onOzcxqqIbdD99pRi2AMxjQMt5CJiJXFLxtfY1X7wKCZB4nmaDZxaeRfo0AJKS_9MQ7bw7TpR6sRQdHM2fdiFI6eUO7mDe0SeUKRCfDo8Xgr-Q3KnvuiDR82GzOnnaz77MCDhVEYw6Wm59xqQhDSkD72jBry_KDLGwNXtFhsNRRxV8UlS1nS8-kJbq5UnnFmzkJhEy7EF7FVgEpbxTl9k7nMzKmxKV50oMWRiLoSKbzwhbe2T-H4iiGesPb3Fb12BK71Ro-j790jcpJ0aafYsWNSqb3prjEYGz8GMUIHr26m0Lp5NlOI4BODPx69NgLYxSm5cUWKGFiV3Gs3nWafx9MgZzH5Xg20oEp3FJ2jv6RrawURRs1mgZfKBIhwx_xifQqhgjC5ey40Rs6ukv0eHlGx_muMQ6Tikjibntj3WpzJua0HRKSNkt06p54yug95Ek3nyX8--4Jq_cFWOYR11QJ592wsRV1HMioTrmRw1ZHAPmD3LgGZyZ2s4yRSbXPfMMCoBdiAAKDe4alt57g335oPn9WZ7vuFSina3VZcL0hZ0bcRjVN5fU-aeaqlMw2bwSTTNbdcm3zrm6cB0XHW_K5b_WDsnrnIHNByGw8OSsqR4w5jBsv-bf0EsNlscjQhZ4zY_bjxspZSHxwdXSRHf_couYYxzsDc5f9UMEYH0WTOFr8-ScWFcvV6cW5BKw-c_qMbNVsQ2BuNe7PwUc"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44389/?timeout=1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "timeout",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "becomeAdmin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": ".AspNetCore.Identity.Application=CfDJ8LRUYag5KK9FlmxwEXYachlunA_oSDuzRRqTKB3bvWa9cr16EmzX6XTEzqjKjfIBvF-_vA6Mr88Vmds5UZXyOD0iMh0JJyXxJzqv7pTI6AvhP9rt7XezdfSKXKbVymJ2oqY7QlRjPxjDaoIIrH0YnvoMf-7xiX5NMA9GXQ13hx20iEd3-Xyelz2XPh4mMuKx4I56Z3tpHQAYGlAmOx-3VnNNrY9joV4y1YqrgoHX3x1RcQsPlmSMeqBKo2BKUyEWwBkkGXePXMW214YmAnkSdtkFK_4VqhhJECNvnBbRbEWFN5OtnwTKbrSW4XNuazLXOU_-KDotI25hJXKsI2IfZv77i_RFqAbiN39qvjkG8lU2Kg1rRmSyEQEy2hxyIfZWBcBVThiS_q3tjvNFMIcBj-HgOTWhuvajNm23FJSd_ux5BP-MjpZmffF5O9IN5b7meNzEJKqU4H7SeftYauMM6HKLlhxLg943CQSjciifaLD1YB71z-UH9TmfhOfDabUL6lhY8Ipaiok15NjAbCByEOA7PwN98vizqpLLTGxMXjR_LpbzT_WtOfstlsAdgx1vgMYsySL5GTQvqlIXb2_WkPWKL9lkOyl06oXXBuZlIvyMyXDOk3u2J7858SNn2TY9T_pAtK9Du5N3RyWCD5fhD2hWatGTCfMv0Sl8b5S62PE-2iHnNYdu0JVMQydO7TPc2QJR5JaYiHKn1Ur9ulNHdUo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44389/api/admin/becomeAdmin",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						"api",
+						"admin",
+						"becomeAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check validation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": ".AspNetCore.Identity.Application=CfDJ8LRUYag5KK9FlmxwEXYachlunA_oSDuzRRqTKB3bvWa9cr16EmzX6XTEzqjKjfIBvF-_vA6Mr88Vmds5UZXyOD0iMh0JJyXxJzqv7pTI6AvhP9rt7XezdfSKXKbVymJ2oqY7QlRjPxjDaoIIrH0YnvoMf-7xiX5NMA9GXQ13hx20iEd3-Xyelz2XPh4mMuKx4I56Z3tpHQAYGlAmOx-3VnNNrY9joV4y1YqrgoHX3x1RcQsPlmSMeqBKo2BKUyEWwBkkGXePXMW214YmAnkSdtkFK_4VqhhJECNvnBbRbEWFN5OtnwTKbrSW4XNuazLXOU_-KDotI25hJXKsI2IfZv77i_RFqAbiN39qvjkG8lU2Kg1rRmSyEQEy2hxyIfZWBcBVThiS_q3tjvNFMIcBj-HgOTWhuvajNm23FJSd_ux5BP-MjpZmffF5O9IN5b7meNzEJKqU4H7SeftYauMM6HKLlhxLg943CQSjciifaLD1YB71z-UH9TmfhOfDabUL6lhY8Ipaiok15NjAbCByEOA7PwN98vizqpLLTGxMXjR_LpbzT_WtOfstlsAdgx1vgMYsySL5GTQvqlIXb2_WkPWKL9lkOyl06oXXBuZlIvyMyXDOk3u2J7858SNn2TY9T_pAtK9Du5N3RyWCD5fhD2hWatGTCfMv0Sl8b5S62PE-2iHnNYdu0JVMQydO7TPc2QJR5JaYiHKn1Ur9ulNHdUo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44389/api/admin/createNotValidUser",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						"api",
+						"admin",
+						"createNotValidUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "claim",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44389/api/admin/claims",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44389",
+					"path": [
+						"api",
+						"admin",
+						"claims"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

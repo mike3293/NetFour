@@ -22,34 +22,28 @@ namespace Auth.Data.Stores
 
         public Task<IdentityResult> CreateAsync(IdentityRole role, CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
+            IdentityResult result = IdentityResult.Failed();
+            bool createResult = _dataAccess.CreateRole(role);
+
+            if (createResult)
             {
-                IdentityResult result = IdentityResult.Failed();
-                bool createResult = _dataAccess.CreateRole(role);
+                result = IdentityResult.Success;
+            }
 
-                if (createResult)
-                {
-                    result = IdentityResult.Success;
-                }
-
-                return result;
-            });
+            return Task.FromResult(result);
         }
 
         public Task<IdentityResult> DeleteAsync(IdentityRole role, CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
+            IdentityResult result = IdentityResult.Failed();
+            bool deleteResult = _dataAccess.RemoveRole(role);
+
+            if (deleteResult)
             {
-                IdentityResult result = IdentityResult.Failed();
-                bool deleteResult = _dataAccess.RemoveRole(role);
+                result = IdentityResult.Success;
+            }
 
-                if (deleteResult)
-                {
-                    result = IdentityResult.Success;
-                }
-
-                return result;
-            });
+            return Task.FromResult(result);
         }
 
         public void Dispose()
@@ -59,62 +53,46 @@ namespace Auth.Data.Stores
 
         public Task<IdentityRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
-            {
-                return _dataAccess.GetById(roleId);
-            });
+            return Task.FromResult(_dataAccess.GetById(roleId));
         }
 
         public Task<IdentityRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
-            {
-                return _dataAccess.GetRoleByName(normalizedRoleName);
-            });
+            return Task.FromResult(_dataAccess.GetRoleByName(normalizedRoleName));
         }
 
         public Task<string> GetNormalizedRoleNameAsync(IdentityRole role, CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
-            {
-                return role.NormalizedName;
-            });
+            return Task.FromResult(role.NormalizedName);
         }
 
         public Task<string> GetRoleIdAsync(IdentityRole role, CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
-            {
-                return role.Id;
-            });
+            return Task.FromResult(role.Id);
         }
 
         public Task<string> GetRoleNameAsync(IdentityRole role, CancellationToken cancellationToken)
         {
-            return Task.Run(() => role.Name);
+            return Task.FromResult(role.Name);
         }
 
         public Task SetNormalizedRoleNameAsync(IdentityRole role, string normalizedName, CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
-            {
-                role.NormalizedName = normalizedName;
-            });
+            role.NormalizedName = normalizedName;
+
+            return Task.CompletedTask;
         }
 
         public Task SetRoleNameAsync(IdentityRole role, string roleName, CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
-            {
-                role.Name = roleName;
-                role.NormalizedName = roleName.ToUpper();
-            });
+            role.Name = roleName;
+            role.NormalizedName = roleName.ToUpper();
+
+            return Task.CompletedTask;
         }
 
         public Task<IdentityResult> UpdateAsync(IdentityRole role, CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
-            {
                 IdentityResult result = IdentityResult.Failed();
                 bool updateResult = _dataAccess.Update(role);
 
@@ -123,8 +101,7 @@ namespace Auth.Data.Stores
                     result = IdentityResult.Success;
                 }
 
-                return result;
-            });
+                return Task.FromResult(result);
         }
     }
 }

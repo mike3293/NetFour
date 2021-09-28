@@ -28,50 +28,42 @@ namespace Auth.Data.Stores
 
         public Task AddClaimsAsync(AppUser user, IEnumerable<Claim> claims, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                _userClaimDataAccess.AddClaims(user, claims);
-            });
+            _userClaimDataAccess.AddClaims(user, claims);
+
+            return Task.CompletedTask;
         }
 
         public Task AddToRoleAsync(AppUser user, string roleName, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                _userRoleDataAccess.AddToRole(user, roleName);
-            });
+            _userRoleDataAccess.AddToRole(user, roleName);
+
+            return Task.CompletedTask;
         }
 
         public Task<IdentityResult> CreateAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() =>
+            IdentityResult result = IdentityResult.Failed();
+            bool createResult = _userDataAccess.CreateUser(user);
+
+            if (createResult)
             {
-                IdentityResult result = IdentityResult.Failed();
-                bool createResult = _userDataAccess.CreateUser(user);
+                result = IdentityResult.Success;
+            }
 
-                if (createResult)
-                {
-                    result = IdentityResult.Success;
-                }
-
-                return result;
-            });
+            return Task.FromResult(result);
         }
 
         public Task<IdentityResult> DeleteAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() =>
+            IdentityResult result = IdentityResult.Failed();
+            bool deleteResult = _userDataAccess.RemoveUser(user);
+
+            if (deleteResult)
             {
-                IdentityResult result = IdentityResult.Failed();
-                bool deleteResult = _userDataAccess.RemoveUser(user);
+                result = IdentityResult.Success;
+            }
 
-                if (deleteResult)
-                {
-                    result = IdentityResult.Success;
-                }
-
-                return result;
-            });
+            return Task.FromResult(result);
         }
 
         public void Dispose()
@@ -81,108 +73,84 @@ namespace Auth.Data.Stores
 
         public Task<AppUser> FindByEmailAsync(string normalizedEmail, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                return _userDataAccess.GetByEmail(normalizedEmail);
-            });
+            return Task.FromResult(_userDataAccess.GetByEmail(normalizedEmail));
         }
 
         public Task<AppUser> FindByIdAsync(string userId, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                return _userDataAccess.GetUserById(userId);
-            });
+            return Task.FromResult(_userDataAccess.GetUserById(userId));
         }
 
         public Task<AppUser> FindByNameAsync(string normalizedUserName, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                return _userDataAccess.GetUserByUsername(normalizedUserName);
-            });
+            return Task.FromResult(_userDataAccess.GetUserByUsername(normalizedUserName));
         }
 
         public Task<IList<Claim>> GetClaimsAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                return _userClaimDataAccess.GetClaims(user.Id);
-            });
+            return Task.FromResult(_userClaimDataAccess.GetClaims(user.Id));
         }
 
         public Task<string> GetEmailAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() => user.Email);
+            return Task.FromResult(user.Email);
         }
 
         public Task<bool> GetEmailConfirmedAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() => user.EmailConfirmed);
+            return Task.FromResult(user.EmailConfirmed);
         }
 
         public Task<string> GetNormalizedEmailAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() => user.NormalizedEmail);
+            return Task.FromResult(user.NormalizedEmail);
         }
 
         public Task<string> GetNormalizedUserNameAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() => user.NormalizedUserName);
+            return Task.FromResult(user.NormalizedUserName);
         }
 
         public Task<string> GetPasswordHashAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() => user.PasswordHash);
+            return Task.FromResult(user.PasswordHash);
         }
 
         public Task<IList<string>> GetRolesAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                return _userRoleDataAccess.GetAll();
-            });
+            return Task.FromResult(_userRoleDataAccess.GetAll());
         }
 
         public Task<string> GetUserIdAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() => user.Id);
+            return Task.FromResult(user.Id);
         }
 
         public Task<string> GetUserNameAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() => user.UserName);
+            return Task.FromResult(user.UserName);
         }
 
         public Task<IList<AppUser>> GetUsersForClaimAsync(Claim claim, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                return _userClaimDataAccess.GetUsers(claim);
-            });
+            return Task.FromResult(_userClaimDataAccess.GetUsers(claim));
         }
 
         public Task<IList<AppUser>> GetUsersInRoleAsync(string roleName, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                return _userRoleDataAccess.GetInRole(roleName);
-            });
+            return Task.FromResult(_userRoleDataAccess.GetInRole(roleName));
         }
 
         public Task<bool> HasPasswordAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() => true);
+            return Task.FromResult(true);
         }
 
         public Task<bool> IsInRoleAsync(AppUser user, string roleName, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                var users = _userRoleDataAccess.GetInRole(roleName);
+            var users = _userRoleDataAccess.GetInRole(roleName);
 
-                return users.Any(u => u.Id == user.Id);
-            });
+            return Task.FromResult(users.Any(u => u.Id == user.Id));
         }
 
         public Task RemoveClaimsAsync(AppUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
@@ -192,10 +160,9 @@ namespace Auth.Data.Stores
 
         public Task RemoveFromRoleAsync(AppUser user, string roleName, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                _userRoleDataAccess.RemoveUserRole(user.Id, roleName);
-            });
+            _userRoleDataAccess.RemoveUserRole(user.Id, roleName);
+
+            return Task.CompletedTask;
         }
 
         public Task ReplaceClaimAsync(AppUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
@@ -205,64 +172,58 @@ namespace Auth.Data.Stores
 
         public Task SetEmailAsync(AppUser user, string email, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                user.Email = email;
-            });
+            user.Email = email;
+
+            return Task.CompletedTask;
         }
 
         public Task SetEmailConfirmedAsync(AppUser user, bool confirmed, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                user.EmailConfirmed = confirmed;
-            });
+            user.EmailConfirmed = confirmed;
+
+            return Task.CompletedTask;
         }
 
         public Task SetNormalizedEmailAsync(AppUser user, string normalizedEmail, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                user.NormalizedEmail = normalizedEmail;
-            });
+            user.NormalizedEmail = normalizedEmail;
+
+            return Task.CompletedTask;
         }
 
         public Task SetNormalizedUserNameAsync(AppUser user, string normalizedName, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                user.NormalizedUserName = normalizedName;
-            });
+            user.NormalizedUserName = normalizedName;
+
+            return Task.CompletedTask;
         }
 
         public Task SetPasswordHashAsync(AppUser user, string passwordHash, CancellationToken _)
         {
-            return Task.Run(() => { user.PasswordHash = passwordHash; });
+            user.PasswordHash = passwordHash;
+
+            return Task.CompletedTask;
         }
 
         public Task SetUserNameAsync(AppUser user, string userName, CancellationToken _)
         {
-            return Task.Run(() =>
-            {
-                user.UserName = userName;
-                user.NormalizedUserName = userName.ToUpper();
-            });
+            user.UserName = userName;
+            user.NormalizedUserName = userName.ToUpper();
+
+            return Task.CompletedTask;
         }
 
         public Task<IdentityResult> UpdateAsync(AppUser user, CancellationToken _)
         {
-            return Task.Run(() =>
+            IdentityResult result = IdentityResult.Failed();
+            bool updateResult = _userDataAccess.Update(user);
+
+            if (updateResult)
             {
-                IdentityResult result = IdentityResult.Failed();
-                bool updateResult = _userDataAccess.Update(user);
+                result = IdentityResult.Success;
+            }
 
-                if (updateResult)
-                {
-                    result = IdentityResult.Success;
-                }
-
-                return result;
-            });
+            return Task.FromResult(result);
         }
     }
 }

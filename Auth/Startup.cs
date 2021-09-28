@@ -3,7 +3,7 @@ using Auth.Data.Access;
 using Auth.Data.Stores;
 using Auth.Models;
 using Auth.TimeoutMiddleware;
-using Auth.Transformation;
+using Auth.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Auth.Valiadators;
 
 namespace Auth
 {
@@ -37,26 +38,30 @@ namespace Auth
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddSingleton<InMemoryUserDataAccess>();
             services.AddSingleton<InMemoryRoleDataAccess>();
             services.AddSingleton<InMemoryUserRoleDataAccess>();
             services.AddSingleton<InMemoryUserClaimDataAccess>();
+
+            services.AddScoped<IUserValidator<AppUser>, UserCustomValidator>();
+
+            //services.AddScoped<IClaimsTransformation, AddAgeClaimTransformation>();
+            services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, AppClaimsPrincipalFactory>();
 
             services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddUserStore<InMemoryUserStore>()
                 .AddRoleStore<InMemoryRoleStore>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IClaimsTransformation, AddAgeClaimTransformation>();
-
             services.AddControllers();
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("MainAdminOnly", policy =>
-                       policy.RequireRole("ADMIN").RequireClaim("IsMainAdmin", "true"));
+                       policy.RequireRole("ADMIN").RequireClaim("IsMainAdmin", "true").AddRequirements(new CityRequirement("Minsk")));
             });
+
+            services.AddScoped<IAuthorizationHandler, CityAuthorizationHandler>();
 
             services.Configure<SecurityStampValidatorOptions>(o =>
                 o.ValidationInterval = TimeSpan.Zero);

@@ -86,6 +86,7 @@ namespace Auth.Controllers
 
             var admin = new AppUser
             {
+                City = "Minsk",
                 Age = 20,
                 UserName = _configuration["Admin:UserName"],
                 Email = _configuration["Admin:UserEmail"],
@@ -98,6 +99,20 @@ namespace Auth.Controllers
             await _userManager.AddClaimAsync(admin, new Claim("IsMainAdmin", "true"));
         }
 
+        [HttpPost("createNotValidUser")]
+        public async Task<IdentityResult> CreateNotValid()
+        {
+            var commonUser = new AppUser
+            {
+                UserName = "Test@test1.ru",
+                Email = "Test@test1.ru",
+                EmailConfirmed = true
+            };
+            string userPass = "Test@test1.ru";
+
+            return await _userManager.CreateAsync(commonUser, userPass);
+        }
+
         [HttpPost("becomeAdmin")]
         [Authorize]
         public async Task<IdentityResult> BecomeAdmin()
@@ -106,8 +121,6 @@ namespace Auth.Controllers
 
             var result = await _userManager.AddToRoleAsync(user, "Admin");
 
-            var s = await _userManager.IsInRoleAsync(user, "User");
-
             return result;
         }
 
@@ -115,7 +128,7 @@ namespace Auth.Controllers
         [Authorize]
         public string GetClaims()
         {
-            return HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Age").Value;
+            return HttpContext.User.Claims.FirstOrDefault(c => c.Type == "AgeV2")?.Value;
         }
     }
 }

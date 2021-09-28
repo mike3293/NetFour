@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Auth.Transformation
+namespace Auth.Claims
 {
     internal class AddAgeClaimTransformation : IClaimsTransformation
     {
