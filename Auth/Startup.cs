@@ -43,14 +43,12 @@ namespace Auth
             services.AddSingleton<InMemoryUserRoleDataAccess>();
             services.AddSingleton<InMemoryUserClaimDataAccess>();
 
-            services.AddScoped<IUserValidator<AppUser>, UserCustomValidator>();
-
-            //services.AddScoped<IClaimsTransformation, AddAgeClaimTransformation>();
-            services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, AppClaimsPrincipalFactory>();
-
             services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddUserStore<InMemoryUserStore>()
                 .AddRoleStore<InMemoryRoleStore>()
+                .AddUserValidator<UserNameValidator>()
+                .AddUserValidator<UserEmailValidator>()
+                .AddClaimsPrincipalFactory<AppClaimsPrincipalFactory>()
                 .AddDefaultTokenProviders();
 
             services.AddControllers();

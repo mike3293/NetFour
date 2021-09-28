@@ -7,17 +7,10 @@ using System.Threading.Tasks;
 
 namespace Auth.Valiadators
 {
-    public class UserCustomValidator : UserValidator<AppUser>
+    public class UserEmailValidator : IUserValidator<AppUser>
     {
-        public override async Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user)
+        public Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user)
         {
-            var defaultValidationResult = await base.ValidateAsync(manager, user);
-
-            if (!defaultValidationResult.Succeeded)
-            {
-                return defaultValidationResult;
-            }
-
             List<IdentityError> errors = new List<IdentityError>();
 
             if (!user.Email.ToLower().EndsWith("@test.ru"))
@@ -29,9 +22,9 @@ namespace Auth.Valiadators
                 });
             }
 
-            return errors.Count == 0
+            return Task.FromResult(errors.Count == 0
                 ? IdentityResult.Success
-                : IdentityResult.Failed(errors.ToArray());
+                : IdentityResult.Failed(errors.ToArray()));
         }
     }
 }

@@ -104,7 +104,7 @@ namespace Auth.Controllers
         {
             var commonUser = new AppUser
             {
-                UserName = "Test@test1.ru",
+                UserName = "Twest@test1.ru",
                 Email = "Test@test1.ru",
                 EmailConfirmed = true
             };
