@@ -55,7 +55,7 @@ namespace Api.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException)
             {
                 if (!_context.Providers.Any(e => e.Id == id))
                 {

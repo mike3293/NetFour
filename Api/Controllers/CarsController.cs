@@ -24,16 +24,16 @@ namespace Api.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCars()
+        public async Task<ActionResult<IEnumerable<Car>>> GetCars([FromQuery] int? providerId = null)
         {
-            return await _context.Cars.Include(c => c.Provider).ToListAsync();
-        }
+            var baseQuery = _context.Cars.Include(c => c.Provider);
 
-        // TODO: check
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCarsByProvider(int providerId)
-        {
-            return await _context.Cars.Include(c => c.Provider).Where(p => p.Id == providerId).ToListAsync();
+            if (providerId is null)
+            {
+                return await baseQuery.ToListAsync();
+            }
+
+            return await baseQuery.Where(c => c.ProviderId == providerId).ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -63,23 +63,22 @@ namespace Api.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException)
             {
                 if (!_context.Cars.Any(e => e.Id == id))
                 {
                     return NotFound();
                 }
-                // TODO: check
-                else if (_context.Cars.Any(e => e.RegNumber == car.RegNumber))
+                if (_context.Cars.Any(e => e.RegNumber == car.RegNumber))
                 {
                     ModelState.TryAddModelError(nameof(Car.RegNumber), "Registration number is not unique.");
 
                     return BadRequest(ModelState);
                 }
-                else
-                {
-                    throw;
-                }
+            }
+            catch
+            {
+                throw;
             }
 
             return NoContent();
@@ -94,9 +93,8 @@ namespace Api.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException)
             {
-                // TODO: check
                 if (_context.Cars.Any(e => e.RegNumber == car.RegNumber))
                 {
                     ModelState.TryAddModelError(nameof(Car.RegNumber), "Registration number is not unique.");
@@ -109,7 +107,8 @@ namespace Api.Controllers
                 }
             }
 
-            // TODO, add provider
+            await _context.Entry(car).Reference(c => c.Provider).LoadAsync();
+
             return CreatedAtAction("GetCar", new { id = car.Id }, car);
         }
 
