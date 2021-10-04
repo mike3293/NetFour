@@ -9,10 +9,12 @@ namespace Api
 {
     public class Data : DbContext
     {
-        public Data (DbContextOptions<Data> options)
+        public Data(DbContextOptions<Data> options)
             : base(options)
         {
+            Database.EnsureCreated(); 
         }
+
 
         public DbSet<Car> Cars { get; set; }
 

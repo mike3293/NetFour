@@ -31,7 +31,7 @@ namespace Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Car>> GetCar(int id)
         {
-            var car = await _context.Cars.FindAsync(id);
+            var car = await _context.Cars.Include(c => c.Provider).FirstOrDefaultAsync(c => c.Id == id);
 
             if (car == null)
             {
