@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Api.Controllers
 {
@@ -15,19 +16,26 @@ namespace Api.Controllers
     {
         private readonly Data _context;
 
+
         public CarsController(Data context)
         {
             _context = context;
         }
 
-        // GET: api/Cars
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCar()
+        public async Task<ActionResult<IEnumerable<Car>>> GetCars()
         {
-            return await _context.Cars.ToListAsync();
+            return await _context.Cars.Include(c => c.Provider).ToListAsync();
         }
 
-        // GET: api/Cars/5
+        // TODO: check
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Car>>> GetCarsByProvider(int providerId)
+        {
+            return await _context.Cars.Include(c => c.Provider).Where(p => p.Id == providerId).ToListAsync();
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Car>> GetCar(int id)
         {
@@ -41,8 +49,6 @@ namespace Api.Controllers
             return car;
         }
 
-        // PUT: api/Cars/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCar(int id, Car car)
         {
@@ -59,9 +65,16 @@ namespace Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CarExists(id))
+                if (!_context.Cars.Any(e => e.Id == id))
                 {
                     return NotFound();
+                }
+                // TODO: check
+                else if (_context.Cars.Any(e => e.RegNumber == car.RegNumber))
+                {
+                    ModelState.TryAddModelError(nameof(Car.RegNumber), "Registration number is not unique.");
+
+                    return BadRequest(ModelState);
                 }
                 else
                 {
@@ -72,18 +85,34 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        // POST: api/Cars
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Car>> PostCar(Car car)
         {
             _context.Cars.Add(car);
-            await _context.SaveChangesAsync();
 
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                // TODO: check
+                if (_context.Cars.Any(e => e.RegNumber == car.RegNumber))
+                {
+                    ModelState.TryAddModelError(nameof(Car.RegNumber), "Registration number is not unique.");
+
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            // TODO, add provider
             return CreatedAtAction("GetCar", new { id = car.Id }, car);
         }
 
-        // DELETE: api/Cars/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCar(int id)
         {
@@ -97,11 +126,6 @@ namespace Api.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool CarExists(int id)
-        {
-            return _context.Cars.Any(e => e.Id == id);
         }
     }
 }

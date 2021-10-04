@@ -16,19 +16,19 @@ namespace Api.Controllers
     {
         private readonly Data _context;
 
+
         public ProvidersController(Data context)
         {
             _context = context;
         }
 
-        // GET: api/Providers
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Provider>>> GetProvider()
         {
             return await _context.Providers.ToListAsync();
         }
 
-        // GET: api/Providers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Provider>> GetProvider(int id)
         {
@@ -42,9 +42,6 @@ namespace Api.Controllers
             return provider;
         }
 
-        // PUT: api/Providers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
         public async Task<IActionResult> PutProvider(int id, Provider provider)
         {
             if (id != provider.Id)
@@ -60,7 +57,7 @@ namespace Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProviderExists(id))
+                if (!_context.Providers.Any(e => e.Id == id))
                 {
                     return NotFound();
                 }
@@ -73,8 +70,6 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        // POST: api/Providers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Provider>> PostProvider(Provider provider)
         {
@@ -84,7 +79,6 @@ namespace Api.Controllers
             return CreatedAtAction("GetProvider", new { id = provider.Id }, provider);
         }
 
-        // DELETE: api/Providers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProvider(int id)
         {
@@ -98,11 +92,6 @@ namespace Api.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool ProviderExists(int id)
-        {
-            return _context.Providers.Any(e => e.Id == id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Api.Models
 {
+    [Index(nameof(RegNumber), IsUnique = true)]
     public class Car
     {
         public int Id { get; set; }
@@ -23,9 +25,10 @@ namespace Api.Models
         [MaxLength(2048, ErrorMessage = "URL too long.")]
         public string ImageUrl { get; set; }
 
+        [Required]
         public int ProviderId { get; set; }
 
-        [Required, ForeignKey("ProviderId")]
+        [ForeignKey(nameof(ProviderId))]
         public Provider Provider { get; set; }
     }
 }
