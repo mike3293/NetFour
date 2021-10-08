@@ -30,9 +30,8 @@ namespace Api.Errors
         public ErrorResponse(ModelStateDictionary modelState)
         {
             Code = ErrorCode.ValidationFailed;
-            // TODO: check
             Errors = modelState.Keys
-                    .SelectMany(key => modelState[key].Errors.Select(x => new ValidationError(key, x.ErrorMessage)))
+                    .SelectMany(key => modelState[key].Errors.Select(x => new ApiError(x.ErrorMessage)))
                     .ToList();
         }
     }
