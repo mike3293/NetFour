@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Api;
 using System.Text.Json.Serialization;
+using Api.Errors;
 
 namespace Api
 {
@@ -27,7 +28,14 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().ConfigureApiBehaviorOptions(options =>
+                options.InvalidModelStateResponseFactory = actionContext =>
+                    new BadRequestObjectResult(new ErrorResponse(actionContext.ModelState)))
+            .AddJsonOptions(opts =>
+                 {
+                     var enumConverter = new JsonStringEnumConverter();
+                     opts.JsonSerializerOptions.Converters.Add(enumConverter);
+                 });
 
             services.AddDbContext<Data>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Data")));

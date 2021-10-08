@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Api.Errors;
 
 namespace Api.Controllers
 {
@@ -54,7 +55,7 @@ namespace Api.Controllers
         {
             if (id != car.Id)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(ErrorCode.InvalidParameters, "ID of provided entity does not match ID in request."));
             }
 
             _context.Entry(car).State = EntityState.Modified;
@@ -73,7 +74,7 @@ namespace Api.Controllers
                 {
                     ModelState.TryAddModelError(nameof(Car.RegNumber), "Registration number is not unique.");
 
-                    return BadRequest(ModelState);
+                    return BadRequest(new ErrorResponse(ModelState));
                 }
             }
             catch
@@ -99,7 +100,7 @@ namespace Api.Controllers
                 {
                     ModelState.TryAddModelError(nameof(Car.RegNumber), "Registration number is not unique.");
 
-                    return BadRequest(ModelState);
+                    return BadRequest(new ErrorResponse(ModelState));
                 }
                 else
                 {
