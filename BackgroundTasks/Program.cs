@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Api
+namespace BackgroundTasks
 {
     public class Program
     {
@@ -21,6 +16,10 @@ namespace Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration((hostingConext, configurationBuilder) =>
+                {
+                    configurationBuilder.AddJsonFile("dynamicConfiguration.json", optional: false, reloadOnChange: true);
                 });
     }
 }
